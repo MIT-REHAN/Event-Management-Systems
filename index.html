@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pune Events - Discover Your Vibe</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Using Google Fonts for that Gen Z vibe -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo">Pune<span class="highlight">Events</span></div>
+            <nav>
+                <ul>
+                    <li><a href="#hero" class="active">Home</a></li>
+                    <li><a href="#events-section">Explore</a></li>
+                    <li><a href="#create-event-section" class="btn-nav">Create Event</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+        <div class="container hero-content">
+            <h1>Find Your <span class="gradient-text">Next Vibe</span> In Pune.</h1>
+            <p>Concerts, Tech Meetups, Standups & More.</p>
+            <a href="#events-section" class="btn-primary search-trigger">Start Exploring</a>
+        </div>
+    </section>
+
+    <main class="container">
+
+        <!-- Create Event Section -->
+        <section id="create-event-section" class="card-section">
+            <div class="section-title">
+                <h2>Host an Event</h2>
+                <p>Got something cool? Share it with the world.</p>
+            </div>
+            <form id="create-event-form">
+                <div class="form-group">
+                    <label for="event-name">Event Name</label>
+                    <input type="text" id="event-name" placeholder="e.g. Neon Party 2026" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="organizer-name">Organizer</label>
+                    <input type="text" id="organizer-name" placeholder="Who's running the show?" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="event-date">Date</label>
+                        <input type="date" id="event-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="event-time">Time Slots</label>
+                        <input type="text" id="event-time" placeholder="e.g. 10:00 AM, 7:00 PM" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="event-venue">Venue</label>
+                    <input type="text" id="event-venue" placeholder="Where is it happening?" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ticket-price">Price ($)</label>
+                        <input type="number" id="ticket-price" min="0" placeholder="0 for Free" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="total-seats">Capacity</label>
+                        <input type="number" id="total-seats" min="1" placeholder="Max attendees" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="contact-phone">Phone</label>
+                        <input type="tel" id="contact-phone" placeholder="Contact Number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-email">Email</label>
+                        <input type="email" id="contact-email" placeholder="Contact Email" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary full-width">Launch Event 🚀</button>
+            </form>
+        </section>
+
+        <!-- Event Calendar / List Section -->
+        <section id="events-section" class="card-section transparent-bg">
+            <div class="section-header">
+                <h2>Upcoming <span class="highlight">Events</span></h2>
+                <div class="search-wrapper">
+                    <input type="text" id="search-bar" placeholder="Search for events, venues...">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+
+            <div id="events-container" class="events-grid">
+                <!-- Events will be rendered here by JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">Pune<span>Events</span></div>
+                <ul class="footer-links">
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+                <div class="socials">
+                    <a href="#">IG</a>
+                    <a href="#">TW</a>
+                    <a href="#">FB</a>
+                </div>
+            </div>
+            <p class="copyright">© 2026 Pune Events. Made with ❤️ in Pune.</p>
+        </div>
+    </footer>
+
+    <!-- Booking Modal -->
+    <div id="booking-modal" class="modal">
+        <div class="modal-content glass-effect">
+            <span class="close-btn">&times;</span>
+            <h2 id="modal-event-name">Book Tickets</h2>
+            <p id="modal-event-details" class="modal-subtitle"></p>
+
+            <form id="booking-form">
+                <input type="hidden" id="booking-event-id">
+
+                <div class="form-group">
+                    <label for="booking-time">Select Time Slot</label>
+                    <div class="select-wrapper">
+                        <select id="booking-time" required>
+                            <!-- Options populated by JS -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="booking-tickets">Number of Tickets</label>
+                    <input type="number" id="booking-tickets" min="1" value="1" required>
+                </div>
+
+                <div class="price-summary">
+                    <span>Total Price</span>
+                    <span class="total-amount">$<span id="booking-total-price">0</span></span>
+                </div>
+
+                <button type="submit" class="btn-primary full-width">Confirm Booking ✨</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirmation Alert (Custom simple overlay or just JS alert) -->
+    <!-- Used standard browser alert for simplicity/compatibility -->
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>
