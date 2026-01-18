@@ -123,7 +123,7 @@ nav a.active {
     margin-bottom: 30px;
 }
 
-/* Common Components */
+
 .btn-primary {
     background: var(--gradient-main);
     color: white;
@@ -148,7 +148,6 @@ nav a.active {
     margin-top: 10px;
 }
 
-/* Sections */
 .card-section {
     background: white;
     padding: 40px;
@@ -173,7 +172,6 @@ nav a.active {
     margin-bottom: 10px;
 }
 
-/* Forms */
 .form-group {
     margin-bottom: 20px;
 }
@@ -218,7 +216,6 @@ select:focus {
     box-shadow: 0 0 0 4px rgba(162, 155, 254, 0.1);
 }
 
-/* Events Grid & Cards */
 .section-header {
     display: flex;
     justify-content: space-between;
@@ -342,7 +339,6 @@ select:focus {
     transform: scale(1.05);
 }
 
-/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -421,7 +417,6 @@ select:focus {
     color: var(--primary-color);
 }
 
-/* Footer */
 .main-footer {
     background: white;
     padding: 50px 0 20px;
@@ -491,7 +486,6 @@ select:focus {
     font-size: 0.9rem;
 }
 
-/* Media Queries */
 @media (max-width: 768px) {
     .hero-content h1 {
         font-size: 2.5rem;
