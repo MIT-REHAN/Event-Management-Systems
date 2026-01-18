@@ -1,4 +1,4 @@
-// Initial Sample Events with more variety
+
 const initialEvents = [
     {
         id: 1,
@@ -74,10 +74,10 @@ const initialEvents = [
     }
 ];
 
-// State
+
 let events = JSON.parse(localStorage.getItem('events')) || initialEvents;
 
-// DOM Elements
+
 const eventsContainer = document.getElementById('events-container');
 const createEventForm = document.getElementById('create-event-form');
 const searchBar = document.getElementById('search-bar');
@@ -88,19 +88,19 @@ const bookingTimeSelect = document.getElementById('booking-time');
 const bookingTicketsInput = document.getElementById('booking-tickets');
 const bookingTotalPriceSpan = document.getElementById('booking-total-price');
 
-// --- Initialization ---
+
 
 function init() {
     renderEvents(events);
     checkReminders();
 
-    // Save initial load if empty
+  
     if (!localStorage.getItem('events')) {
         saveEvents();
     }
 }
 
-// --- Event Handlers ---
+
 
 createEventForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -118,13 +118,13 @@ createEventForm.addEventListener('submit', (e) => {
         email: document.getElementById('contact-email').value
     };
 
-    events.unshift(newEvent); // Add to beginning
+    events.unshift(newEvent); 
     saveEvents();
     renderEvents(events);
     createEventForm.reset();
     alert('✨ Event Launched Successfully! ✨');
 
-    // Scroll to events
+    
     document.getElementById('events-section').scrollIntoView({ behavior: 'smooth' });
 });
 
@@ -138,7 +138,7 @@ searchBar.addEventListener('input', (e) => {
     renderEvents(filtered);
 });
 
-// Modal Logic
+
 closeModalBtn.onclick = () => {
     modal.style.display = "none";
 };
@@ -164,7 +164,7 @@ bookingForm.addEventListener('submit', (e) => {
     bookingForm.reset();
 });
 
-// --- Helper Functions ---
+
 
 function renderEvents(eventsList) {
     eventsContainer.innerHTML = '';
@@ -177,7 +177,7 @@ function renderEvents(eventsList) {
     eventsList.forEach(event => {
         const card = document.createElement('div');
         card.className = 'event-card';
-        // Format price display
+       
         const priceDisplay = event.price === 0 ? 'FREE' : `$${event.price}`;
 
         card.innerHTML = `
@@ -203,7 +203,7 @@ function saveEvents() {
     localStorage.setItem('events', JSON.stringify(events));
 }
 
-// Exposed to global scope for HTML onclick
+
 window.openBookingModal = function (id) {
     const event = events.find(e => e.id === id);
     if (!event) return;
@@ -212,7 +212,7 @@ window.openBookingModal = function (id) {
     document.getElementById('modal-event-name').innerText = event.name;
     document.getElementById('modal-event-details').innerText = `${event.date} @ ${event.venue}`;
 
-    // Populate times
+   
     bookingTimeSelect.innerHTML = '';
     event.times.forEach(time => {
         const option = document.createElement('option');
@@ -221,7 +221,7 @@ window.openBookingModal = function (id) {
         bookingTimeSelect.appendChild(option);
     });
 
-    // Reset price
+
     bookingTicketsInput.value = 1;
     updatePrice();
 
@@ -249,5 +249,5 @@ function checkReminders() {
     }
 }
 
-// Run init
+
 init();
