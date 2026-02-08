@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>District | Global Event Discovery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="event.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="brand">District<span>.</span></div>
+        <div class="nav-actions">
+            <div class="icon-btn"><i class="fa-regular fa-user"></i></div>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        
+        <h1>Create. Host.<br>Experience.</h1>
+        <p style="font-size: 1.2rem; color: #ddd; margin-bottom: 1rem;">From underground gigs to tech summits.</p>
+        
+        <div style="display: flex; gap: 20px;">
+            <button class="btn btn-primary" onclick="scrollToGrid()">Explore Events</button>
+            <button class="btn btn-glass" onclick="openStudio()">Create Event</button>
+        </div>
+    </div>
+
+    <div class="search-section">
+        <div class="search-wrapper">
+            <div class="search-input-group">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="sQuery" class="search-field" placeholder="Event Name...">
+            </div>
+            
+            <div class="search-input-group" onclick="this.querySelector('input').showPicker()">
+                <i class="fa-regular fa-calendar"></i>
+                <input type="date" id="sDate" class="search-field" style="color-scheme: dark;">
+            </div>
+            
+            <div class="search-input-group">
+                <i class="fa-solid fa-layer-group"></i>
+                <select id="sType" class="search-field">
+                    <option value="">All Types</option>
+                    <option value="Party">Party</option>
+                    <option value="Wedding">Wedding</option>
+                    <option value="Corporate">Corporate</option>
+                    <option value="Workshop">Workshop</option>
+                    <option value="Sports">Sports</option>
+                </select>
+            </div>
+            
+            <div class="search-input-group">
+                <i class="fa-solid fa-location-dot"></i>
+                <select id="sLoc" class="search-field">
+                    <option value="">All Locations</option>
+                    <option value="New York">New York, USA</option>
+                    <option value="London">London, UK</option>
+                    <option value="Tokyo">Tokyo, Japan</option>
+                    <option value="Pune">Pune, India</option>
+                    <option value="Belgium">Belgium</option>
+                </select>
+            </div>
+
+            <button class="clear-btn" onclick="resetSearch()" title="Clear Filters"><i class="fa-solid fa-xmark"></i></button>
+            <button class="search-btn" onclick="filterEvents()"><i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+    </div>
+
+    <section class="content-section" id="discover">
+        <div class="section-header" style="margin-bottom: 2rem;">
+            <h2 style="font-size: 2rem;">Trending Events</h2>
+            <div style="color:var(--text-muted); margin-top:5px;" id="resultCount">Showing all events</div>
+        </div>
+        <div class="event-grid" id="eventsGrid">
+            </div>
+    </section>
+
+    <div class="booking-overlay" id="bookingOverlay" style="display: none;">
+        <div class="booking-card">
+            <div style="position:absolute; top:20px; right:20px; cursor:pointer;" onclick="closeBooking()">
+                <i class="fa-solid fa-xmark" style="font-size:1.2rem;"></i>
+            </div>
+            <div class="booking-header">
+                <div class="booking-title" id="bkTitle">Event Name</div>
+                <div class="booking-meta">
+                    <span id="bkDate"><i class="fa-regular fa-calendar"></i> Date</span>
+                    <span id="bkLoc"><i class="fa-solid fa-location-dot"></i> Loc</span>
+                </div>
+            </div>
+            <form onsubmit="return false;">
+                <div class="form-row"><label class="form-label">Full Name</label><input type="text" class="form-input" placeholder="John Doe"></div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-row"><label class="form-label">Phone</label><input type="tel" class="form-input" placeholder="+91 0000..."></div>
+                    <div class="form-row"><label class="form-label">Email</label><input type="email" class="form-input" placeholder="john@email.com"></div>
+                </div>
+                <div class="form-row">
+                    <label class="form-label">Tickets</label>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div class="qty-control">
+                            <button class="qty-btn" onclick="updateTicket(-1)">-</button>
+                            <div class="qty-val" id="bkQty">1</div>
+                            <button class="qty-btn" onclick="updateTicket(1)">+</button>
+                        </div>
+                        <div style="color:#888; font-size:0.9rem;">Price: <span id="bkSinglePrice" style="color:white;">₹500</span></div>
+                    </div>
+                </div>
+                <div class="total-section">
+                    <div style="color:#888;">Total Amount</div>
+                    <div style="font-size:1.5rem; font-weight:700; color:var(--primary);" id="bkTotal">₹500</div>
+                </div>
+                <button class="pay-btn" onclick="processPayment()">Pay Securely <i class="fa-solid fa-lock" style="margin-left:8px; font-size:0.8rem;"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <div class="creator-overlay" id="studioOverlay">
+        <div class="studio-sidebar">
+            <h3 style="margin-bottom: 2rem;">New Event</h3>
+            <div id="progressList"></div>
+            <button class="btn-glass" style="margin-top:auto; width:100%; justify-content:center;" onclick="closeStudio()">Cancel</button>
+        </div>
+
+        <div class="studio-main">
+            <form id="wizardForm" onsubmit="return false;">
+                <div class="step-content active" id="step1">
+                    <h2>Step 1: The Vibe</h2>
+                    <p style="color:#888;">What kind of experience are you creating?</p>
+                    <div class="selection-grid">
+                        <div class="select-card" onclick="selectType(this, 'Wedding', 25000)"><i class="fa-solid fa-rings-wedding"></i><br>Wedding</div>
+                        <div class="select-card" onclick="selectType(this, 'Birthday', 5000)"><i class="fa-solid fa-cake-candles"></i><br>Birthday</div>
+                        <div class="select-card" onclick="selectType(this, 'Corporate', 10000)"><i class="fa-solid fa-briefcase"></i><br>Corporate</div>
+                        <div class="select-card" onclick="selectType(this, 'Party', 5000)"><i class="fa-solid fa-champagne-glasses"></i><br>Party</div>
+                        <div class="select-card" onclick="selectType(this, 'Concert', 15000)"><i class="fa-solid fa-music"></i><br>Concert</div>
+                        <div class="select-card" onclick="selectType(this, 'Workshop', 2000)"><i class="fa-solid fa-laptop-code"></i><br>Workshop</div>
+                    </div>
+                </div>
+
+                <div class="step-content" id="step2">
+                    <h2>Step 2: Basic Info</h2>
+                    <div class="input-grid">
+                        <div class="full-width"><label>Event Title</label><input type="text" id="inpTitle" placeholder="Ex: Summer Rooftop Bash"></div>
+                        <div class="full-width"><label>Description</label><textarea id="inpDesc" rows="3"></textarea></div>
+                    </div>
+                </div>
+
+                <div class="step-content" id="step3">
+                    <h2>Step 3: When is it?</h2>
+                    <div class="input-grid">
+                        <div class="full-width"><label>Date</label><input type="date" id="inpDate"></div>
+                        <div><label>Start Time</label><input type="time" id="inpStart"></div>
+                        <div><label>End Time</label><input type="time" id="inpEnd"></div>
+                    </div>
+                </div>
+
+                <div class="step-content" id="step4">
+                    <h2>Step 4: Crowd Size</h2>
+                    <div class="input-grid">
+                        <div class="full-width">
+                            <label>Expected Guests: <span id="guestCountVal">100</span></label>
+                            <input type="range" min="10" max="1000" value="100" style="margin-top:10px;" oninput="updateGuests(this.value)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-content" id="step5">
+                    <h2>Step 5: Food & Drink</h2>
+                    <div class="selection-grid">
+                        <div class="select-card" onclick="selectFood(this, 500)"><i class="fa-solid fa-carrot"></i><br>Veg Only</div>
+                        <div class="select-card" onclick="selectFood(this, 800)"><i class="fa-solid fa-drumstick-bite"></i><br>Non-Veg</div>
+                        <div class="select-card" onclick="selectFood(this, 1200)"><i class="fa-solid fa-wine-glass"></i><br>Premium</div>
+                    </div>
+                </div>
+
+                <div class="step-content" id="step6">
+                    <h2>Step 6: Add-ons</h2>
+                    <div class="selection-grid">
+                        <div class="select-card" onclick="toggleAddon(this, 10000)"><i class="fa-solid fa-camera"></i><br>Photo (+10k)</div>
+                        <div class="select-card" onclick="toggleAddon(this, 15000)"><i class="fa-solid fa-music"></i><br>DJ (+15k)</div>
+                        <div class="select-card" onclick="toggleAddon(this, 5000)"><i class="fa-solid fa-shield-halved"></i><br>Security (+5k)</div>
+                    </div>
+                </div>
+
+                <div class="step-content" id="step7">
+                    <h2>Step 7: Location</h2>
+                    <div class="input-grid">
+                        <div class="full-width"><label>Venue Name / Address</label><input type="text" id="inpLoc" placeholder="Ex: Blue Ridge Hall, Pune"></div>
+                    </div>
+                </div>
+
+                <div class="step-content" id="step8">
+                    <h2>Step 8: Ticketing</h2>
+                    <p style="color:#888;">How much will attendees pay?</p>
+                    <div class="input-grid">
+                        <div class="full-width"><label>Ticket Price (₹)</label><input type="number" id="inpPrice" placeholder="0 for Free Event"></div>
+                    </div>
+                </div>
+
+                <div class="step-content" id="step9">
+                    <h2>Step 9: Visuals</h2>
+                    <div class="input-grid">
+                        <div class="full-width">
+                            <label>Choose a Cover Style</label>
+                            <select id="inpImg">
+                                <option value="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=500">Party / Concert</option>
+                                <option value="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=500">Elegant / Wedding</option>
+                                <option value="https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=500">Corporate / Tech</option>
+                                <option value="https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=500">Sports / Outdoors</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-content" id="step10">
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <i class="fa-solid fa-rocket" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                        <h2>Ready to Launch?</h2>
+                        <div style="background:#111; padding:1.5rem; border-radius:12px; margin-top:1.5rem; text-align:left;">
+                            <h4 style="margin-bottom:10px;">Draft Summary</h4>
+                            <div style="display:flex; justify-content:space-between; color:#888; margin-bottom:5px;"><span>Title:</span> <span id="revTitle" style="color:white;">-</span></div>
+                            <div style="display:flex; justify-content:space-between; color:#888; margin-bottom:5px;"><span>Date:</span> <span id="revDate" style="color:white;">-</span></div>
+                            <div style="display:flex; justify-content:space-between; color:#888;"><span>Est. Host Cost:</span> <span id="revCost" style="color:var(--primary); font-weight:700;">-</span></div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="budget-bar">
+            <div>
+                <div class="budget-info">Estimated Hosting Cost</div>
+                <div class="budget-total" id="liveCost">₹0</div>
+            </div>
+            <div style="display: flex; gap: 15px;">
+                <button class="btn-glass" onclick="navStep(-1)" id="prevBtn" style="display:none;">Back</button>
+                <button class="btn btn-primary" onclick="navStep(1)" id="nextBtn">Next Step</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="event.js"></script>
+</body>
+</html>
